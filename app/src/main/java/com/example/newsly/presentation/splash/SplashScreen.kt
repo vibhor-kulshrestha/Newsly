@@ -17,17 +17,18 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.newsapp.R
+import com.example.newsly.presentation.navigation.Routes
 
 @Composable
 fun SplashScreen(navController: NavController, viewModel: SplashViewModel = hiltViewModel()) {
     val state by viewModel.splashState.collectAsState()
     LaunchedEffect(state) {
         when (state) {
-            is SplashState.NavigateToLogin -> navController.navigate("login") {
-                popUpTo("splash") { inclusive = true }
+            is SplashState.NavigateToLogin -> navController.navigate(Routes.Login.route) {
+                popUpTo(Routes.Splash.route) { inclusive = true }
             }
-            is SplashState.NavigateToHome -> navController.navigate("home") {
-                popUpTo("splash") { inclusive = true }
+            is SplashState.NavigateToHome -> navController.navigate(Routes.Home.route) {
+                popUpTo(Routes.Splash.route) { inclusive = true }
             }
             else -> Unit
         }

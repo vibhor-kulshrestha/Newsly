@@ -3,6 +3,7 @@ package com.example.newsly.di
 import com.example.newsly.data.repository.FirebaseAuthRepository
 import com.example.newsly.domain.repository.AuthRepository
 import com.example.newsly.domain.usecase.ObserveAuthStateUseCase
+import com.example.newsly.domain.usecase.ResetPasswordUseCase
 import com.example.newsly.domain.usecase.SignInUseCase
 import com.example.newsly.domain.usecase.SignOutUseCase
 import com.example.newsly.domain.usecase.SignUpUseCase
@@ -36,4 +37,7 @@ class AuthModule {
 
     @Provides
     fun provideSignOutUseCase(repo: AuthRepository) = SignOutUseCase(repo)
+
+    @Provides
+    fun provideResetPasswordUseCase(repo: AuthRepository) = ResetPasswordUseCase(repo)
 }

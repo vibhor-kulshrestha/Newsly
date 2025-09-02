@@ -70,6 +70,20 @@ class FirebaseAuthRepository(private val auth: FirebaseAuth) : AuthRepository {
         }
     }
 
+    override suspend fun resetPassword(email: String): AuthResult {
+        return suspendCancellableCoroutine { cont ->
+            auth.sendPasswordResetEmail(email)
+                .addOnCompleteListener { task ->
+                    if(!cont.isActive) return@addOnCompleteListener
+                    if(task.isSuccessful) {
+                        cont.resume(AuthResult.Success(null))
+                    } else {
+                        val msg = task.exception?.localizedMessage ?: "Failed To reset email"
+                        cont.resume(AuthResult.Error(msg))
+                    }
+                }
+        }
+    }
     override fun signOut() {
         auth.signOut()
     }

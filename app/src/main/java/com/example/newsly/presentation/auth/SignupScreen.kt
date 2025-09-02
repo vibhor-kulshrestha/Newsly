@@ -71,7 +71,10 @@ fun SignupScreen(
                     enabled = !state.isLoading,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    if (state.isLoading) CircularProgressIndicator(Modifier.size(18.dp), strokeWidth = 2.dp)
+                    if (state.isLoading) CircularProgressIndicator(
+                        Modifier.size(18.dp),
+                        strokeWidth = 2.dp
+                    )
                     else Text("Create account")
                 }
 

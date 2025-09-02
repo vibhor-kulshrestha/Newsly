@@ -88,16 +88,13 @@ fun LoginScreen(
                     TextButton(onClick = { navController.navigate(Routes.Signup.route) }) {
                         Text("No account? Create one")
                     }
+
+                    Spacer(Modifier.height(16.dp))
+                    TextButton(onClick = { navController.navigate(Routes.ForgetPassword.route) }) {
+                        Text("Forgot password?")
+                    }
                 }
             }
         }
-    }
-}
-
-@Preview
-@Composable
-fun preview() {
-    NewslyTheme {
-        LoginScreen(NavController(LocalContext.current))
     }
 }
