@@ -13,6 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,6 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.newsly.presentation.navigation.Routes
+import com.example.newsly.presentation.news.NewsScreen
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -31,18 +33,22 @@ fun HomeScreen(navController: NavController) {
                 title = { Text("Newsly") },
                 actions = {
                     IconButton(onClick = { navController.navigate(Routes.Settings.route) }) {
-                        Icon(Icons.Default.Settings, contentDescription = "Settings")
+                        Icon(Icons.Default.Settings, contentDescription = "Settings", tint = MaterialTheme.colorScheme.onPrimary)
                     }
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary
+                )
             )
         }
     ) { padding ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding), contentAlignment = Alignment.Center
+                .padding(padding), contentAlignment = Alignment.TopCenter
         ) {
-            Text("Home – News feed coming soon", style = MaterialTheme.typography.headlineSmall)
+            NewsScreen()
         }
     }
 }

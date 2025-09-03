@@ -10,7 +10,7 @@ plugins {
 android {
     namespace = "com.example.newsapp"
     compileSdk = 36
-
+    android.buildFeatures.buildConfig = true
     defaultConfig {
         applicationId = "com.example.newsapp"
         minSdk = 23
@@ -22,12 +22,29 @@ android {
     }
 
     buildTypes {
+        debug {
+            isMinifyEnabled = false
+            buildConfigField("String", "NEWS_API_KEY", "\"2a12e29838994dd9b97bf9fc0d513123\"")
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String", "NEWS_API_KEY", "\"2a12e29838994dd9b97bf9fc0d513123\"")
+        }
+    }
+    flavorDimensions += "environment"
+    productFlavors {
+        create("dev") {
+            dimension = "environment"
+            versionNameSuffix = "-dev"
+            buildConfigField("String", "BASE_URL", "\"https://newsapi.org/v2/\"")
+        }
+        create("prod") {
+            dimension = "environment"
+            buildConfigField("String", "BASE_URL", "\"https://newsapi.org/v2/\"")
         }
     }
     compileOptions {
@@ -80,8 +97,9 @@ dependencies {
 
     // Retrofit + OkHttp
     implementation(libs.retrofit)
-    implementation(libs.converter.moshi)
     implementation(libs.logging.interceptor)
+    implementation(libs.kotlin.reflect)
+    implementation(libs.converter.gson)
 
     // Room
     implementation(libs.androidx.room.runtime)

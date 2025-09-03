@@ -2,6 +2,8 @@ package com.example.newsly.di
 
 import com.example.newsly.data.repository.FirebaseAuthRepository
 import com.example.newsly.domain.repository.AuthRepository
+import com.example.newsly.domain.repository.NewsRepository
+import com.example.newsly.domain.usecase.GetTopHeadlinesUseCase
 import com.example.newsly.domain.usecase.ObserveAuthStateUseCase
 import com.example.newsly.domain.usecase.ResetPasswordUseCase
 import com.example.newsly.domain.usecase.SignInUseCase
