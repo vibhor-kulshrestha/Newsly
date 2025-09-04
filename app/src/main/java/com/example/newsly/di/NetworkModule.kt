@@ -1,6 +1,7 @@
 package com.example.newsly.di
 
 import com.example.newsapp.BuildConfig
+import com.example.newsly.data.local.NewsDatabase
 import com.example.newsly.data.remote.NewsApiService
 import com.example.newsly.data.repository.NewsRepositoryImpl
 import com.example.newsly.domain.repository.NewsRepository
@@ -42,7 +43,7 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideNewsRepository(api: NewsApiService): NewsRepository {
-        return NewsRepositoryImpl(api)
+    fun provideNewsRepository(api: NewsApiService, db: NewsDatabase): NewsRepository {
+        return NewsRepositoryImpl(api, db)
     }
 }

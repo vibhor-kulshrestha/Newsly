@@ -2,15 +2,32 @@ package com.example.newsly.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+// Primary
+val BluePrimary = Color(0xFF0080C4)
+val OnBluePrimary = Color(0xFFFFFFFF)
+val BluePrimaryContainer = Color(0xFFC2E8F9)
+val OnBluePrimaryContainer = Color(0xFF003547)
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+// Secondary
+val TealSecondary = Color(0xFF006A4E)
+val OnTealSecondary = Color(0xFFFFFFFF)
+val TealSecondaryContainer = Color(0xFFC2F2E2)
+val OnTealSecondaryContainer = Color(0xFF00201A)
 
-val PrimaryBlue = Color(0xFF0080C4)   // #0080C4
-val PrimaryBlueDark = Color(0xFF006999) // darker variant
-val PrimaryBlueLight = Color(0xFF4DB8E6) // lighter variant
-val WhiteText = Color(0xFFFFFFFF)
+// Tertiary
+val PurpleTertiary = Color(0xFF9C27B0)
+val OnPurpleTertiary = Color(0xFFFFFFFF)
+val PurpleTertiaryContainer = Color(0xFFF3D9FA)
+val OnPurpleTertiaryContainer = Color(0xFF360040)
+
+// Background / Surface
+val LightBackground = Color(0xFFFDFDFD)
+val OnLightBackground = Color(0xFF121212)
+val LightSurface = Color(0xFFFFFFFF)
+val OnLightSurface = Color(0xFF1A1A1A)
+
+// Error
+val ErrorRed = Color(0xFFB3261E)
+val OnErrorRed = Color(0xFFFFFFFF)
+val ErrorContainer = Color(0xFFF9DEDC)
+val OnErrorContainer = Color(0xFF410002)
