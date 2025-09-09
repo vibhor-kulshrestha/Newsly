@@ -1,6 +1,11 @@
 package com.example.newsly.presentation.home
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,6 +28,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -46,8 +52,12 @@ import com.example.newsly.presentation.search.SearchViewModel
 @Composable
 fun HomeScreen(
     navController: NavController,
+    viewModel: HomeViewModel = hiltViewModel(),
     searchViewModel: SearchViewModel = hiltViewModel()
 ) {
+    LaunchedEffect(Unit) {
+        viewModel.scheduleSync()
+    }
     var isSearching by remember { mutableStateOf(false) }
     val query by searchViewModel.query.collectAsState()
     val searchResults = searchViewModel.searchResult.collectAsLazyPagingItems()
@@ -57,7 +67,16 @@ fun HomeScreen(
                 title = {
                     AnimatedContent(
                         targetState = isSearching,
-                        label = "SearchAnimation"
+                        label = "SearchAnimation",
+                        transitionSpec = {
+                            if (targetState) {
+                                slideInHorizontally { it } + fadeIn() togetherWith
+                                        slideOutHorizontally { -it } + fadeOut()
+                            } else {
+                                slideInHorizontally { -it } + fadeIn() togetherWith
+                                        slideOutHorizontally { it } + fadeOut()
+                            }
+                        }
                     ) { searching ->
                         if (searching) {
                             TextField(

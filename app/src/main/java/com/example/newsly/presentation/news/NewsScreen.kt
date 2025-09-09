@@ -9,9 +9,19 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
@@ -20,44 +30,56 @@ import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
 import com.example.newsly.domain.model.Article
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewsScreen(
     viewModel: NewsViewModel = hiltViewModel()
 ) {
     val articles = viewModel.articles.collectAsLazyPagingItems()
-
-    LazyColumn {
-        items(
-            articles.itemCount,
-            key = { index -> articles[index]?.url ?: index }
-        ) { article ->
-            articles[article]?.let { NewsItem(it) }
+    val isRefreshing = articles.loadState.refresh is LoadState.Loading
+    val pullRefreshState = rememberPullToRefreshState()
+    PullToRefreshBox(
+        isRefreshing = isRefreshing,
+        onRefresh = {
+            articles.refresh()
+        },
+        state = pullRefreshState,
+        indicator = {
+            PullToRefreshDefaults.Indicator(
+                modifier = Modifier.align(Alignment.TopCenter),
+                isRefreshing = isRefreshing,
+                state = pullRefreshState,
+                containerColor = MaterialTheme.colorScheme.primary,
+                color = MaterialTheme.colorScheme.onPrimary
+            )
         }
+    ) {
+        LazyColumn {
+            items(
+                articles.itemCount,
+                key = { index -> articles[index]?.url ?: index }
+            ) { article ->
+                articles[article]?.let { NewsItem(it) }
+            }
 
-        articles.apply {
-            when {
-                loadState.refresh is LoadState.Loading -> {
-                    item {
-                        CircularProgressIndicator(
-                            modifier = Modifier.size(50.dp),
-                            color = MaterialTheme.colorScheme.secondary
-                        )
+            articles.apply {
+                when {
+                    loadState.append is LoadState.Loading -> {
+                        item {
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(50.dp),
+                                color = MaterialTheme.colorScheme.secondary
+                            )
+                        }
                     }
-                }
 
-                loadState.append is LoadState.Loading -> {
-                    item {
-                        CircularProgressIndicator(
-                            modifier = Modifier.size(50.dp),
-                            color = MaterialTheme.colorScheme.secondary
-                        )
+                    loadState.refresh is LoadState.Error -> {
+                        val e = loadState.refresh as LoadState.Error
+                        item { Text("Error: ${e.error.localizedMessage}") }
                     }
-                }
-
-                loadState.refresh is LoadState.Error -> {
-                    val e = loadState.refresh as LoadState.Error
-                    item { Text("Error: ${e.error.localizedMessage}") }
                 }
             }
         }

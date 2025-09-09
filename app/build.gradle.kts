@@ -118,4 +118,7 @@ dependencies {
 
     // Coil for image loading
     implementation(libs.coil.compose)
+
+    implementation(libs.androidx.hilt.work)
+    ksp(libs.androidx.hilt.compiler)
 }
